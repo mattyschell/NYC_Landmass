@@ -16,14 +16,14 @@ This is a single ring polygon depicing the bounding rectangle of the basemap
 extent. It's the transparent pink polygon below with landmass in the background
 for reference.
 
-![LandmassExtent](Images/landmassextent.png)
+![LandmassExtent](images/landmassextent.png)
 
 ### LandmassNYCDry
 
 LandmassNYCDry is LandmassNYCWet with interior hydrogaphy rings (holes) removed
 to create a continous landmass surrounded by salt water.
 
-![LandmassNYCDry](Images/landmassnycdry.png)
+![LandmassNYCDry](images/landmassnycdry.png)
 
 ### LandmassNYCWet
 
@@ -32,7 +32,7 @@ removed. It's a fully dissolved landmass with no polygon boundaries at political
 juridiction boundaries like boroughs.  There are no multipart polygons, each 
 polygon is a single outer ring.
 
-![LandmassNYCWet](Images/landmassnycwet.png)
+![LandmassNYCWet](images/landmassnycwet.png)
 
 ### LandmassFringe
 
@@ -41,7 +41,7 @@ is spatially dissolved with no political boundaries. Each polygon is a single
 outer ring, there are no multipart polygons. The level of detail is 
 similar to the planimetrics data captured within New York City.
 
-![LandmassFringe](Images/landmassfringe.png)
+![LandmassFringe](images/landmassfringe.png)
 
 ### LandmassPangaeaWet
 
@@ -54,7 +54,7 @@ fancy hydro shading in water.
 
 The image extent below is zoomed in a bit to try to show interior hydro.
 
-![LandmassPangaeaWet](Images/landmasspangaeawet.png)
+![LandmassPangaeaWet](images/landmasspangaeawet.png)
 
 ### LandmassPangaeaDry
 
@@ -62,7 +62,7 @@ LandmassPangaeaDry is LandmassPangaeaWet with interior hydro rings removed.
 This means that though it is still a single ginormous multipolygon it has
 no interior rings.
 
-![LandmassPangaeaDry](Images/landmasspangaeadry.png)
+![LandmassPangaeaDry](images/landmasspangaeadry.png)
 
 ### LandmassRiftedWet
 
@@ -73,7 +73,7 @@ for each object as needed.
 The image extent below is zoomed in a bit to try to show interior hydro and 
 one of the rings is highlighted.
 
-![LandmassRiftedWet](Images/landmassriftedwet.png)
+![LandmassRiftedWet](images/landmassriftedwet.png)
 
 ### LandmassRiftedDry
 
@@ -82,7 +82,7 @@ object for each exterior ring.
 
 The image extent below is zoomed in a little and one of the rings is highlighted.
 
-![LandmassRiftedDry](Images/landmassrifteddry.png)
+![LandmassRiftedDry](images/landmassrifteddry.png)
 
 
 ## Hand-Wavy Creation Steps: NYC 
@@ -95,12 +95,12 @@ borough.
 
 3. However do extend Bronx and Queens a little into Westchester and Nassau
 
-   ![landmassnycdryblob](Images/landmassnycdryblob.png)
+   ![landmassnycdryblob](images/landmassnycdryblob.png)
 
 4. Subtract all-water planimetrics [hydrography](https://github.com/CityOfNewYork/nyc-planimetrics/blob/master/Capture_Rules.md#hydrography) 
 (feature_code <> 2640 and feature_code <> 2650)
 
-    ![landmassnycsubtract](Images/landmassnycsubtract.png)
+    ![landmassnycsubtract](images/landmassnycsubtract.png)
 
 5. Subtract Westchester County (use Census Bureau TIGER line full resolution)
 
@@ -121,7 +121,7 @@ Nassau County Coasts.
 step must be completed before the addition of hydro structures to distinguish
 lakes from enclosed piers and the like.
 
-    ![landmasspiers](Images/landmasspiers.png)
+    ![landmasspiers](images/landmasspiers.png)
 
 10. Now add planimetrics [hydro_structure](https://github.com/CityOfNewYork/nyc-planimetrics/blob/master/Capture_Rules.md#hydro-structure). 
 Add floating piers, etc, but don't add overlapping structures on piers, 
@@ -146,7 +146,7 @@ includes Ellis and Liberty Island.
 4. Subtract TIGER line AREAWATER polygons.  This will create both the coastline
 and interior hydro like lakes and ponds.
 
-    ![landmassfringehydro](Images/landmassfringehydro.png)
+    ![landmassfringehydro](images/landmassfringehydro.png)
 
 5. Remove interior hydro rings.  This can't be done for each county since chains
 of hydro may cross counties all the way to the coast.
