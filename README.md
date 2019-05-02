@@ -18,21 +18,21 @@ for reference.
 
 ![LandmassExtent](images/landmassextent.png)
 
+### LandmassNYCWet
+
+LandmassNYCWet is the New York City landmass with interior hydrography (lakes and ponds)
+removed. It's a fully dissolved landmass with no polygon boundaries at political
+jurisdiction boundaries like boroughs.  There are no multipart polygons, each 
+polygon is a single outer ring.
+
+![LandmassNYCWet](images/landmassnycwet.png)
+
 ### LandmassNYCDry
 
 LandmassNYCDry is LandmassNYCWet with interior hydrogaphy rings (holes) removed
 to create a continous landmass surrounded by salt water.
 
 ![LandmassNYCDry](images/landmassnycdry.png)
-
-### LandmassNYCWet
-
-LandmassNYCWet is the New York City landmass with interior hydrography (lakes and ponds)
-removed. It's a fully dissolved landmass with no polygon boundaries at political
-juridiction boundaries like boroughs.  There are no multipart polygons, each 
-polygon is a single outer ring.
-
-![LandmassNYCWet](images/landmassnycwet.png)
 
 ### LandmassFringe
 
@@ -85,7 +85,13 @@ The image extent below is zoomed in a little and one of the rings is highlighted
 ![LandmassRiftedDry](images/landmassrifteddry.png)
 
 
-## Hand-Wavy Creation Steps: NYC 
+## How To Create
+
+The steps below are a rough guide and a process like this inevitably includes
+a lot of trial and error.  But don't worry friends, it's our process, our rules,
+the trick is to never be afraid.
+
+### Hand-Wavy Creation Steps: NYC 
 
 1. Generate a buffered polygon for each borough.  We did this by hand, don't 
 worry, drawing is fun and it only takes a few minutes.
@@ -132,13 +138,13 @@ Nassau County Coasts.
 
 ```This is LandmassNYCDry```
 
-## Hand-Wavy Creation Steps: Fringe Business
+### Hand-Wavy Creation Steps: Fringe Business
 
 1. Take selected coastal counties in New York, New Jersey, and Connecticut from
 TIGER line.
 
-2. (SECRET EXECUTIVE DECISION 1) Manually clip back section of New Jersey that 
-overlaps Shooter's Island off the north shore of Staten Island
+2. (SECRET EXECUTIVE DECISION 1) Manually clip back the section of New Jersey 
+that overlaps Shooter's Island off the north shore of Staten Island
 
 3. (SECRET EXECUTIVE DECISION 2) Manually remove the section of New Jersey that
 includes Ellis and Liberty Island.
@@ -164,7 +170,7 @@ extending all the way to the LandmassExtent boundary.
 
 ```This is LandmassFringe```
 
-## Hand-Wavy Creation Steps: Full Extent Datasets
+### Hand-Wavy Creation Steps: Full Extent Datasets
 
 1. Copy LandmassNYCWet to a working layer
 
@@ -192,10 +198,11 @@ simplification.
 
 ```This is LandmassRiftedWet```
 
-9. Exlpode step 7 LandmassPangaeaDry
+9. Eplode step 7 LandmassPangaeaDry
 
 ```This is LandmassRiftedDry```
 
+From all of us at NYC_Landmass thank you for being you.
 
 
 
