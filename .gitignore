@@ -1,0 +1,13 @@
+# ESRI connections and data files 
+*.sde
+*.shp
+*.dbf
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.qmd
+*.sbn
+*.sbx
+scratch/*
+*-local.sh

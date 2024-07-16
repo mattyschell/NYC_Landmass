@@ -1,13 +1,10 @@
 # NYC_Landmass  
 
-The Geographic Information Systems outfit within the New York City Department
-of Information Techonology and Telecommunications (DoITT GIS, pronounced
-"do it gee eye ess") produces several landmass layers useful on products like
-the [NYC Basemap Map Tiles](https://maps.nyc.gov/tiles/)
+The Geographic Information Systems outfit within the New York City Office of Technology and Innovation produces several landmass layers useful on products like the [NYC Basemap Map Tiles](https://maps.nyc.gov/tiles/)
 
 We derive these landmass layers primarily from the [NYC Planimetrics](https://github.com/CityOfNewYork/nyc-planimetrics/blob/master/Capture_Rules.md)
 data. Specifically, landmass is the inverse of [hydrography](https://github.com/CityOfNewYork/nyc-planimetrics/blob/master/Capture_Rules.md#hydrography )
-with some additional preparation.
+with some additional preparation.  Friends, this is our inverse of hydrography with some additional preparation, our rules, the trick is never to be afraid.
 
 
 ### LandmassExtent
