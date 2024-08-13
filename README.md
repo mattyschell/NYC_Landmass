@@ -2,8 +2,8 @@
 
 The Geographic Information Systems outfit within the New York City Office of Technology and Innovation produces several landmass layers useful on products like the [NYC Basemap Map Tiles](https://maps.nyc.gov/tiles/)
 
-We derive these landmass layers primarily from the [NYC Planimetrics](https://github.com/CityOfNewYork/nyc-planimetrics/blob/master/Capture_Rules.md)
-data. Specifically, landmass is the inverse of [hydrography](https://github.com/CityOfNewYork/nyc-planimetrics/blob/master/Capture_Rules.md#hydrography )
+We derive these landmass layers primarily from the [NYC Planimetrics](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md)
+data. Specifically, landmass is the inverse of [hydrography](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md#hydrography )
 with some additional preparation.  Friends, this is our inverse of hydrography with some additional preparation, our rules, the trick is never to be afraid.
 
 
@@ -100,7 +100,7 @@ borough.
 
    ![landmassnycdryblob](images/landmassnycdryblob.png)
 
-4. Subtract all-water planimetrics [hydrography](https://github.com/CityOfNewYork/nyc-planimetrics/blob/master/Capture_Rules.md#hydrography) 
+4. Subtract all-water planimetrics [hydrography](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md#hydrography) 
 (feature_code <> 2640 and feature_code <> 2650)
 
     ![landmassnycsubtract](images/landmassnycsubtract.png)
@@ -111,7 +111,7 @@ borough.
 
 ```Stash this step 6 dataset away, we'll pick it up at step 9```
 
-7. Add planimetrics [hydro_structure](https://github.com/CityOfNewYork/nyc-planimetrics/blob/master/Capture_Rules.md#hydro-structure). 
+7. Add planimetrics [hydro_structure](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md#hydro-structure). 
 Add floating piers, etc, but don't add overlapping structures on piers, 
 sub_feature_code 280040.  Don't add structures that are on the New Jersey and
 Nassau County Coasts.
@@ -126,7 +126,7 @@ lakes from enclosed piers and the like.
 
     ![landmasspiers](images/landmasspiers.png)
 
-10. Now add planimetrics [hydro_structure](https://github.com/CityOfNewYork/nyc-planimetrics/blob/master/Capture_Rules.md#hydro-structure). 
+10. Now add planimetrics [hydro_structure](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md#hydro-structure). 
 Add floating piers, etc, but don't add overlapping structures on piers, 
 sub_feature_code 280040.  Don't add structures that are on the New Jersey and
 Nassau County Coasts.
@@ -200,6 +200,7 @@ simplification.
 ```This is LandmassRiftedDry```
 
 From all of us at NYC_Landmass thank you for being you.
+
 
 
 
