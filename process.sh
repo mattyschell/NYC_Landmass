@@ -1,0 +1,1 @@
+psql -t -f ./sql/process.sql

@@ -2,52 +2,38 @@
 
 The Geographic Information Systems outfit within the New York City Office of Technology and Innovation produces several landmass layers useful on products like the [NYC Basemap Map Tiles](https://maps.nyc.gov/tiles/)
 
-We derive these landmass layers primarily from the [NYC Planimetrics](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md)
-data. Specifically, landmass is the inverse of [hydrography](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md#hydrography )
-with some additional preparation.  Friends, this is our inverse of hydrography with some additional preparation, our rules, the trick is never to be afraid.
+We derive these landmass layers primarily from the [NYC Planimetrics](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md) data. Specifically, landmass is the inverse of [hydrography](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md#hydrography ) with some additional preparation.  Friends, this is our inverse of hydrography with some additional preparation, our rules, the trick is never to be afraid.
 
 
 ### LandmassExtent
 
-This is a single ring polygon depicing the bounding rectangle of the basemap 
-extent. It's the transparent pink polygon below with landmass in the background
-for reference.
+This is a single ring polygon depicing the bounding rectangle of the basemap extent. It's the transparent pink polygon below with landmass in the background for reference.
 
 ![LandmassExtent](images/landmassextent.png)
 
 ### LandmassNYCWet
 
-LandmassNYCWet is the New York City landmass with interior hydrography (lakes and ponds)
-removed. It's a fully dissolved landmass with no polygon boundaries at political
-jurisdiction boundaries like boroughs.  There are no multipart polygons, each 
-polygon is a single outer ring.
+LandmassNYCWet is the New York City landmass with interior hydrography (lakes and ponds) removed. It's a fully dissolved landmass with no polygon boundaries at political jurisdiction boundaries like boroughs.  There are no multipart polygons, each polygon is a single outer ring.
 
 ![LandmassNYCWet](images/landmassnycwet.png)
 
 ### LandmassNYCDry
 
-LandmassNYCDry is LandmassNYCWet with interior hydrogaphy rings (holes) removed
-to create a continous landmass surrounded by salt water.
+LandmassNYCDry is LandmassNYCWet with interior hydrogaphy rings (holes) removed to create a continous landmass surrounded by salt water.
 
 ![LandmassNYCDry](images/landmassnycdry.png)
 
 ### LandmassFringe
 
-LandmassFringe is a dissolved landmass for land outside of New York City.  It
-is spatially dissolved with no political boundaries. Each polygon is a single
-outer ring, there are no multipart polygons. The level of detail is 
-similar to the planimetrics data captured within New York City.
+LandmassFringe is a dissolved landmass for land outside of New York City.  It is spatially dissolved with no political boundaries. Each polygon is a single outer ring, there are no multipart polygons. The level of detail is similar to the planimetrics data captured within New York City.
 
 ![LandmassFringe](images/landmassfringe.png)
 
 ### LandmassPangaeaWet
 
-LandmassPangaeaWet is LandmassFringe unioned with LandmassNYCWet and processed 
-into a single ginormous object. All polygons and interior hydro is represented
-as one multipolygon with many interior rings.
+LandmassPangaeaWet is LandmassFringe unioned with LandmassNYCWet and processed into a single ginormous object. All polygons and interior hydro is represented as one multipolygon with many interior rings.
 
-Why flagellate ourselves with such a geometric shape?  It's useful when creating
-fancy hydro shading in water.
+Why flagellate ourselves with such a geometric shape?  It's useful when creating fancy hydro shading in water.
 
 The image extent below is zoomed in a bit to try to show interior hydro.
 
@@ -55,27 +41,21 @@ The image extent below is zoomed in a bit to try to show interior hydro.
 
 ### LandmassPangaeaDry
 
-LandmassPangaeaDry is LandmassPangaeaWet with interior hydro rings removed.  
-This means that though it is still a single ginormous multipolygon it has
-no interior rings.
+LandmassPangaeaDry is LandmassPangaeaWet with interior hydro rings removed. This means that though it is still a single ginormous multipolygon it has no interior rings.
 
 ![LandmassPangaeaDry](images/landmasspangaeadry.png)
 
 ### LandmassRiftedWet
 
-LandmassRiftedWet is an exploded version of LandmassPangaeaWet.  Instead of a 
-single object each exterior ring gets its own object with interior rings
-for each object as needed.
+LandmassRiftedWet is an exploded version of LandmassPangaeaWet.  Instead of a single object each exterior ring gets its own object with interior rings for each object as needed.
 
-The image extent below is zoomed in a bit to try to show interior hydro and 
-one of the rings is highlighted.
+The image extent below is zoomed in a bit to try to show interior hydro and one of the rings is highlighted.
 
 ![LandmassRiftedWet](images/landmassriftedwet.png)
 
 ### LandmassRiftedDry
 
-LandmassRiftedDry is an exploded version of LandmassPangaeaDry with a single 
-object for each exterior ring. 
+LandmassRiftedDry is an exploded version of LandmassPangaeaDry with a single object for each exterior ring. 
 
 The image extent below is zoomed in a little and one of the rings is highlighted.
 
@@ -84,19 +64,17 @@ The image extent below is zoomed in a little and one of the rings is highlighted
 
 ## How To Create
 
-The steps below are a rough guide and a process like this inevitably includes
-a lot of trial and error.  But don't worry friends, it's our process, our rules,
-the trick is to never be afraid.
+The steps below are a rough guide and a process like this inevitably includes a lot of trial and error.  But don't worry friends, it's our process, our rules, the trick is to never be afraid.
 
 ### Hand-Wavy Creation Steps: NYC 
 
-1. Generate a buffered polygon for each borough.  We did this by hand, don't 
-worry, drawing is fun and it only takes a few minutes.
+Generate a buffered polygon for each borough.  We did this by hand, don't worry, drawing is fun and it only takes a few minutes.
 
-2. Extend each borough blob into into the water without touching another NYC 
-borough.
+1. Extend each borough blob into into NYC water without touching another NYC borough.
 
-3. However do extend Bronx and Queens a little into Westchester and Nassau
+2. Extend Bronx and Queens a little into Westchester and Nassau
+
+3. The technical rule for the roughborough layer: every vertex and segment should be either in NYC hydrography or fringe land.  
 
    ![landmassnycdryblob](images/landmassnycdryblob.png)
 
