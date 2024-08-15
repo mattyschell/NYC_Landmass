@@ -79,4 +79,34 @@ and
     st_distance(a.geom, (select geom from step6boroughunion)) < 500;
                        
 
+-- LandmassPangaeaWet
+
+create table 
+    pangaeawetpolys (gid serial4
+                     ,geom geometry(polygon, 2263));
+
+insert into 
+    pangaeawetpolys (geom)
+select 
+    (st_dump(geom)).geom
+from
+    landmassnycwet;
+
+insert into 
+    pangaeawetpolys (geom)
+select 
+    geom
+from
+    landmassfringe;
+
+create table 
+    landmasspangaeawet (gid serial4
+                       ,geom geometry(polygon, 2263));
+
+insert into 
+    landmasspangaeawet (geom)
+select 
+    (st_dump(st_union(geom))).geom
+from
+    pangaeawetpolys 
 
