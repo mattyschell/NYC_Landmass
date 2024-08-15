@@ -90,24 +90,17 @@ Generate a buffered polygon for each borough.  We did this by hand, don't worry,
 ```Stash this step 6 dataset away, we'll pick it up at step 9```
 
 7. Add planimetrics [hydro_structure](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md#hydro-structure). 
-Add floating piers, etc, but don't add overlapping structures on piers, 
-sub_feature_code 280040.  Don't add structures that are on the New Jersey and
-Nassau County Coasts.
+Add nearby floating piers, etc, but don't add overlapping structures on piers, sub_feature_code 280040.  Don't add structures that are on the New Jersey and Nassau County Coasts. If we drop a few floating piers way out in the Hudson or bays that is OK.
 
 8. Explode multipolygons into individual records.
 
 ```This is LandmassNYCWet```
 
-9. Starting with the stashed dataset from step 6, remove interior rings.  This 
-step must be completed before the addition of hydro structures to distinguish
-lakes from enclosed piers and the like.
+9. Starting with the stashed dataset from step 6, remove interior rings.  This step must be completed before the addition of hydro structures to distinguish lakes from enclosed piers and the like.
 
     ![landmasspiers](images/landmasspiers.png)
 
-10. Now add planimetrics [hydro_structure](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md#hydro-structure). 
-Add floating piers, etc, but don't add overlapping structures on piers, 
-sub_feature_code 280040.  Don't add structures that are on the New Jersey and
-Nassau County Coasts.
+10. Now add planimetrics [hydro_structure](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md#hydro-structure).  Add floating piers, etc, but don't add overlapping structures on piers, sub_feature_code 280040.  Don't add structures that are on the New Jersey and Nassau County Coasts.
 
 11. Explode multipolygons into indvividual records.
 
