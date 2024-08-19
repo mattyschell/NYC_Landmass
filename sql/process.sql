@@ -1,73 +1,56 @@
-set search_path to landmass, public;
-
-
---refactor with cte?  But seems slower
-create table 
-    hydrographyunion (gid serial4
-                     ,geom geometry(multipolygon, 2263));
+-- the steps here could probably be refactored into
+-- a single SQL
+-- but the benefits of this cleverness would be minimal
+-- and the steps serve as breakpoints for understanding
+-- the process and investigating issues
+-- JUST SAY NO to being too clever
 
 -- 4. Subtract all-water planimetrics hydrography 
 -- (feature_code <> 2640 and feature_code <> 2650)
-insert into 
-    hydrographyunion(geom)
-select 
-    st_union(a.geom)
-from 
-    hydrography a
-where 
-    a.feature_code not in (2640,2650);
-
-create table 
-    hydroclipborough (gid serial4
-                     ,geom geometry(multipolygon, 2263));
+-- from our borough blobs
 
 insert into 
-    hydroclipborough (geom) 
+    clippedborough (geom) 
 select 
     st_difference(a.geom
-                 ,(select geom from hydrographyunion))
+                ,(select 
+                      st_union(a.geom) as geom
+                  from 
+                      hydrography a
+                   where 
+                       a.feature_code not in (2640,2650)
+                  )
+                 )
 from
     roughborough a;
 
 -- 6. Subtract Westchester and Nassau (use landmassfringe)
-
-create table 
-    step6borough (gid serial4
-                 ,geom geometry(multipolygon, 2263));
+--    union it all
 
 insert into 
-    step6borough (geom) 
+    alignedborough(geom)   
 select 
-    st_difference(a.geom
-                 ,(select st_union(b.geom) from landmassfringe b))
-from
-    hydroclipborough a;
+    st_union(c.geom)
+from 
+    (
+    select 
+        st_difference(a.geom
+                     ,(select st_union(b.geom) from landmassfringe b)) as geom
+    from
+        clippedborough a
+    ) c;
 
-
-create table 
-    step6boroughunion (gid serial4
-                      ,geom geometry(multipolygon, 2263));
 
 -- 7. Add planimetrics hydro_structure
--- 8. Explode multipolygons into individual records.
-
-insert into 
-    step6boroughunion(geom)
-select 
-    st_union(a.geom)
-from 
-    step6borough a;
-
-create table 
-    landmassnycwet (gid serial4
-                   ,geom geometry(multipolygon, 2263));
+-- 8. Explode multipolygons into individual records
+-- BEHOLD landmassnycwet
 
 insert into 
     landmassnycwet (geom) 
 select 
     (st_dump(
             st_union(st_union(a.geom)
-                    ,(select geom from step6boroughunion)
+                    ,(select geom from alignedborough)
                     )
             )
     ).geom  
@@ -76,37 +59,25 @@ from
 where 
     a.sub_feature_code <> '280040'
 and 
-    st_distance(a.geom, (select geom from step6boroughunion)) < 500;
+    st_distance(a.geom, (select geom from alignedborough)) < 500;
                        
 
 -- LandmassPangaeaWet
-
-create table 
-    pangaeawetpolys (gid serial4
-                     ,geom geometry(polygon, 2263));
-
-insert into 
-    pangaeawetpolys (geom)
-select 
-    (st_dump(geom)).geom
-from
-    landmassnycwet;
-
-insert into 
-    pangaeawetpolys (geom)
-select 
-    geom
-from
-    landmassfringe;
-
-create table 
-    landmasspangaeawet (gid serial4
-                       ,geom geometry(polygon, 2263));
+-- union individual polygons from landmassnycwet
+-- with landmassfringe
 
 insert into 
     landmasspangaeawet (geom)
 select 
     (st_dump(st_union(geom))).geom
 from
-    pangaeawetpolys 
+    (select 
+        (st_dump(geom)).geom
+    from
+        landmassnycwet
+    union 
+    select 
+        geom
+    from
+        landmassfringe); 
 

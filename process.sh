@@ -1,1 +1,1 @@
-psql -t -f ./sql/process.sql
+psql -t -f ./sql/process-all.sql

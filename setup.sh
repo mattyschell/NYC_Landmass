@@ -6,4 +6,3 @@ psql -t -f ./sql/create-database.sql
 export PGDATABASE=scratchmass
 psql -t -f ./sql/setup-database.sql
 psql -t -f ./sql/create-schemas.sql
-#psql -t -f ./sql/setup-schemas.sql
