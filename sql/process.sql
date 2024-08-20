@@ -5,7 +5,7 @@
 -- the process and investigating issues
 -- JUST SAY NO to being too clever
 
--- 4. Subtract all-water planimetrics hydrography 
+-- Subtract all-water planimetrics hydrography 
 -- (feature_code <> 2640 and feature_code <> 2650)
 -- from our borough blobs
 
@@ -24,8 +24,8 @@ select
 from
     roughborough a;
 
--- 6. Subtract Westchester and Nassau (use landmassfringe)
---    union it all
+-- Subtract Westchester and Nassau (use landmassfringe)
+-- union it all
 
 insert into 
     alignedborough(geom)   
@@ -41,8 +41,8 @@ from
     ) c;
 
 
--- 7. Add planimetrics hydro_structure
--- 8. Explode multipolygons into individual records
+-- Add planimetrics hydro_structure
+-- Explode multipolygons into individual records
 -- BEHOLD landmassnycwet
 
 insert into 
@@ -62,14 +62,14 @@ and
     st_distance(a.geom, (select geom from alignedborough)) < 500;
                        
 
--- LandmassPangaeaWet
 -- union individual polygons from landmassnycwet
--- with landmassfringe
+-- with landmassfringe to produce one giant multipolygon
+-- this is landmasspangaeawet
 
 insert into 
     landmasspangaeawet (geom)
 select 
-    (st_dump(st_union(geom))).geom
+    st_union(geom)
 from
     (select 
         (st_dump(geom)).geom
@@ -80,4 +80,4 @@ from
         geom
     from
         landmassfringe); 
-
+        
