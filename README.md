@@ -2,10 +2,26 @@
 
 The Geographic Information Systems outfit within the New York City Office of Technology and Innovation produces several landmass layers useful on products like the [NYC Basemap Map Tiles](https://maps.nyc.gov/tiles/)
 
-We derive these landmass layers primarily from the [NYC Planimetrics](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md) data. Specifically, landmass is the inverse of [hydrography](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md#hydrography ) with some additional preparation.  Friends, this is our inverse of hydrography with some additional preparation, our rules, the trick is never to be afraid.
+We derive these landmass layers primarily from [NYC Planimetrics](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md) data. Specifically, landmass is the inverse of [hydrography](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md#hydrography ) with some additional data processing.  Friends, this is our inverse of hydrography with some additional processing, our rules, the trick is never to be afraid.
 
-Skip to the end of this README for scripting instructions.
 
+# How To Create: PostGIS Rules
+
+We'll create and work in a scatch landmass database named scratchmass.
+
+```shell   
+export LMPASSWORD=**passwordfornewlandmassuser**
+export PGUSER=***existingsuperuser***
+export PGPASSWORD=***existingsuperuserpassword***
+export PGHOST=localhost
+export PGDATABASE=postgres
+./setup.sh
+export PGUSER=landmass
+export PGPASSWORD=$LMPASSWORD
+export PGDATABASE=scratchmass
+./load.sh
+./process.sh
+```
 
 ## LandmassExtent
 
@@ -66,17 +82,17 @@ The image extent below is zoomed in a little and one of the rings is highlighted
 
 # How To Create: Hand Wavy
 
-The steps below are a rough guide and a process like this inevitably includes a lot of trial and error.  But don't worry friends, it's our process, our rules, the trick is to never be afraid.
+The steps below are a rough guide. A process like this inevitably includes some trial and error.  
 
 ### New York City 
 
-Generate a buffered polygon for each borough.  We did this by hand, don't worry, drawing is fun and it only takes a few minutes.
+Generate a buffered polygon for each borough.  We did this by hand, drawing is fun and it only takes a few minutes. (this is data\roughborough in the repo)
 
 1. Extend each borough blob into into NYC water without touching another NYC borough.
 
 2. Extend Bronx and Queens a little into Westchester and Nassau
 
-3. The technical rule for the roughborough layer: every vertex and segment should be either in NYC hydrography or fringe land.  
+3. The technical rule for the roughborough layer: every vertex and segment should either be in NYC hydrography or fringe land. This ensures that every part of the roughborough boundary is chomped back by masking layers. 
 
    ![landmassnycdryblob](images/landmassnycdryblob.png)
 
@@ -110,22 +126,17 @@ Add nearby floating piers, etc, but don't add overlapping structures on piers, s
 
 ### Fringe Business
 
-1. Take selected coastal counties in New York, New Jersey, and Connecticut from
-TIGER line.
+1. Take selected coastal counties in New York, New Jersey, and Connecticut from TIGER line.
 
-2. (SECRET EXECUTIVE DECISION 1) Manually clip back the section of New Jersey 
-that overlaps Shooter's Island off the north shore of Staten Island
+2. (SECRET EXECUTIVE DECISION 1) Manually clip back the section of New Jersey that overlaps Shooter's Island off the north shore of Staten Island
 
-3. (SECRET EXECUTIVE DECISION 2) Manually remove the section of New Jersey that
-includes Ellis and Liberty Island.
+3. (SECRET EXECUTIVE DECISION 2) Manually remove the section of New Jersey that includes Ellis and Liberty Island.
 
-4. Subtract TIGER line AREAWATER polygons.  This will create both the coastline
-and interior hydro like lakes and ponds.
+4. Subtract TIGER line AREAWATER polygons.  This will create both the coastline and interior hydro like lakes and ponds.
 
     ![landmassfringehydro](images/landmassfringehydro.png)
 
-5. Remove interior hydro rings.  This can't be done for each county since chains
-of hydro may cross counties all the way to the coast.
+5. Remove interior hydro rings.  This can't be done for each county individually since chains of hydro may cross counties all the way to the coast.
 
 6. Explode multipolygons into single outer ring polygons.
 
@@ -148,7 +159,7 @@ extending all the way to the LandmassExtent boundary.
 
 3. Dissolve any new internal boundaries
 
-4. (optional) Simplify the shapes to remove coordinates.  In our case this step was motivated by a limitation in Oracle Spatial on the total number of ordinates, around one million (ie 500,000 vertices) allowed in a single sdo_ordinate_array.
+4. (optional) Simplify the shapes to remove coordinates.  In earlier interations of this dataset this step was motivated by a limitation in Oracle Spatial on the total number of ordinates, around one million (ie 500,000 vertices) allowed in a single sdo_ordinate_array.  This limitation doesn't exist in PostGIS.
 
 5. (optional) Dissolve again for polygons with new spatial interactions after simplification.
 
@@ -168,27 +179,28 @@ extending all the way to the LandmassExtent boundary.
 
 ```This is LandmassRiftedDry```
 
-From all of us at NYC_Landmass thank you for being you.
 
-# How To Create: PostGIS Rules
+# Why To Create: Motivation
 
-We'll create and work in a scatch landmass database named scratchmass.
+To the casual user the landmass of NYC is stable. Here are some screenshots showing changes and the motivation for re-generating landmass datasets after each [planimetrics](https://github.com/CityOfNewYork/nyc-planimetrics/blob/main/Capture_Rules.md) delivery.
 
-```shell   
-export LMPASSWORD=**passwordfornewlandmassuser**
-export PGUSER=***existingsuperuser***
-export PGPASSWORD=***existingsuperuserpassword***
-export PGHOST=localhost
-export PGDATABASE=postgres
-./setup.sh
-export PGUSER=landmass
-export PGPASSWORD=$LMPASSWORD
-export PGDATABASE=scratchmass
-./load.sh
-./process.sh
-```
+In these images dark grey 2016 landmass will be underneath light grey 2022 landmass.  Landmass from 2022 is partially transparent. 
 
+In Seagate we can see new beach protection to the south, sand and silt deposits to the north, and a new dock for the NYC Ferry to the northeast.
 
+![seagate](images/seagate.png)
+
+In Brooklyn Bridge Park we see the new marina and pier rehabilitation.
+
+![brooklynbridgepark](images/brooklynbridgepark.png)
+
+More loss of marsh in Jamaica Bay.
+
+![jamaicabay](images/jamaicabay.png)
+
+LaGuardia runways.
+
+![littleflower](images/littleflower.png)
 
 
 
