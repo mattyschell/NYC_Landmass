@@ -131,4 +131,13 @@ select
 from
     landmasspangaeawet;
 
+-- explode the landmasspangaeadry multipolygon
+-- this is landmassrifteddry
+
+insert into 
+    landmassrifteddry (geom) 
+select 
+    (st_dump(geom)).geom as geom
+from
+    landmasspangaeadry;
         

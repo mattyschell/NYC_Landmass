@@ -38,4 +38,12 @@ select
             'landmassriftedwet: some invalid'
     end as landmassriftedwet
 from landmassriftedwet;
+select
+    case
+        when not 
+            count(st_isvalid(geom)) = 0 then 'landmassrifteddry: all valid'
+        else 
+            'landmassrifteddry: some invalid'
+    end as landmassrifteddry
+from landmassrifteddry;
 

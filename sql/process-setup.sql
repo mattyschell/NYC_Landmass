@@ -33,4 +33,9 @@ create table
     landmassriftedwet (gid serial4
                       ,geom geometry(polygon, 2263));
 
+-- deliverable
+create table 
+    landmassrifteddry (gid serial4
+                      ,geom geometry(polygon, 2263));
+
 
