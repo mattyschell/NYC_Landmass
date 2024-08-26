@@ -1,9 +1,8 @@
--- the steps here could probably be refactored into
--- a single SQL
--- but the benefits of this cleverness would be minimal
+-- the steps here could probably be refactored 
+-- but the benefits of cleverness would be minimal
 -- and the steps serve as breakpoints for understanding
 -- the process and investigating issues
--- JUST SAY NO to being too clever
+-- JUST SAY NO to being clever
 
 -- Subtract all-water planimetrics hydrography 
 -- (feature_code <> 2640 and feature_code <> 2650)
@@ -24,8 +23,9 @@ select
 from
     roughborough a;
 
--- Subtract Westchester and Nassau (use landmassfringe)
+-- Subtract Westchester and Nassau (use pre-existing landmassfringe)
 -- union it all
+-- must keep this output (alignedborough) as an input to landmassnycdry
 
 insert into 
     alignedborough(geom)   
@@ -40,8 +40,8 @@ from
         clippedborough a
     ) c;
 
-
--- Add planimetrics hydro_structure
+-- Add planimetrics hydro_structure 
+-- (except structures attached to NJ/Nassau and any way out in water)
 -- Explode multipolygons into individual records
 -- BEHOLD landmassnycwet
 
@@ -61,8 +61,7 @@ where
 and 
     st_distance(a.geom, (select geom from alignedborough)) < 500;
                        
-
--- union individual polygons from landmassnycwet
+-- union all polygons from landmassnycwet
 -- with landmassfringe to produce one giant multipolygon
 -- this is landmasspangaeawet
 
@@ -80,4 +79,34 @@ from
         geom
     from
         landmassfringe); 
+
+-- remove interior rings (water) from alignedborough stashed above  
+-- union with hydro structure  
+-- explode into individual polygons
+-- this is landmassnycdry
+
+with dry as (
+    select
+        st_makepolygon (
+            st_exteriorring((st_dump(geom)).geom)
+        ) as geom
+    from 
+        alignedborough
+) 
+insert into 
+    landmassnycdry (geom)
+select 
+    (st_dump(
+            st_union(st_union(a.geom)
+                    ,(select st_union(geom) from dry)
+                    )
+            )
+    ).geom  
+from 
+    hydro_structure a
+where 
+    a.sub_feature_code <> '280040'
+and 
+    st_distance(a.geom, (select geom from alignedborough)) < 500;
+
         

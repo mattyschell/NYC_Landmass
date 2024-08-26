@@ -14,4 +14,12 @@ select
             'landmasspangaeawet: some invalid'
     end as landmasspangaeawet
 from landmasspangaeawet;
+select
+    case
+        when not 
+            count(st_isvalid(geom)) = 0 then 'landmassnycdry: all valid'
+        else 
+            'landmassnycdry: some invalid'
+    end as landmassnycdry
+from landmassnycdry;
 
