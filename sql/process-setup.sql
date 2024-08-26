@@ -28,4 +28,9 @@ create table
     landmasspangaeadry (gid serial4
                        ,geom geometry(multipolygon, 2263));
 
+-- deliverable
+create table 
+    landmassriftedwet (gid serial4
+                      ,geom geometry(polygon, 2263));
+
 

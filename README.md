@@ -37,7 +37,7 @@ LandmassNYCWet is the New York City landmass with interior hydrography (lakes an
 
 ## LandmassNYCDry
 
-LandmassNYCDry is LandmassNYCWet with interior hydrogaphy rings (holes) removed to create a continous landmass surrounded by salt water.
+LandmassNYCDry is LandmassNYCWet with interior water (holes) removed.
 
 ![LandmassNYCDry](images/landmassnycdry.png)
 

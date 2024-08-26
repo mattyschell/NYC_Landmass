@@ -109,6 +109,9 @@ where
 and 
     st_distance(a.geom, (select geom from alignedborough)) < 500;
 
+-- remove interior rings (water) from landmasspangaeawet
+-- this is landmasspangaeadry
+
 insert into 
     landmasspangaeadry (geom)
 select
@@ -117,4 +120,15 @@ select
     ) as geom
 from 
     landmasspangaeawet;
+
+-- explode the landmasspangaeawet multipolygon
+-- this is landmassriftedwet
+
+insert into 
+    landmassriftedwet (geom) 
+select 
+    (st_dump(geom)).geom as geom
+from
+    landmasspangaeawet;
+
         

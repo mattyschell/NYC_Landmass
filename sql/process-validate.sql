@@ -28,6 +28,14 @@ select
             count(st_isvalid(geom)) = 0 then 'landmasspangaeadry: all valid'
         else 
             'landmasspangaeadry: some invalid'
-    end as landmassnycdry
-from landmassnycdry;
+    end as landmasspangaeadry
+from landmasspangaeadry;
+select
+    case
+        when not 
+            count(st_isvalid(geom)) = 0 then 'landmassriftedwet: all valid'
+        else 
+            'landmassriftedwet: some invalid'
+    end as landmassriftedwet
+from landmassriftedwet;
 
