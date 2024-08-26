@@ -109,4 +109,12 @@ where
 and 
     st_distance(a.geom, (select geom from alignedborough)) < 500;
 
+insert into 
+    landmasspangaeadry (geom)
+select
+    st_makepolygon (
+        st_exteriorring((st_dump(geom)).geom)
+    ) as geom
+from 
+    landmasspangaeawet;
         
